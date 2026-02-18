@@ -1,14 +1,34 @@
 import streamlit as st
 from datetime import date
 import uuid
+import json
+import os
 
 st.set_page_config(layout="wide", page_title="Checkway")
 
 with open("style.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
+DATA_FILE = "checklists_data.json"
+
+def load_checklists():
+    if os.path.exists(DATA_FILE):
+        try:
+            with open(DATA_FILE, "r") as f:
+                return json.load(f)
+        except (json.JSONDecodeError, IOError):
+            return {}
+    return {}
+
+def save_checklists():
+    try:
+        with open(DATA_FILE, "w") as f:
+            json.dump(st.session_state.checklists, f, indent=2)
+    except IOError:
+        pass
+
 if "page"        not in st.session_state: st.session_state.page = "Checklist"
-if "checklists"  not in st.session_state: st.session_state.checklists = {}
+if "checklists"  not in st.session_state: st.session_state.checklists = load_checklists()
 if "open_id"     not in st.session_state: st.session_state.open_id = None
 if "show_form"   not in st.session_state: st.session_state.show_form = False
 if "confirm_del" not in st.session_state: st.session_state.confirm_del = None
@@ -46,6 +66,7 @@ if page == "Checklist":
             with col_yes:
                 if st.button("Yes, delete", key="confirm_yes"):
                     del st.session_state.checklists[del_uid]
+                    save_checklists()
                     st.session_state.confirm_del = None
                     st.rerun()
             with col_no:
@@ -88,6 +109,7 @@ if page == "Checklist":
                         "date":  str(date.today()),
                         "tasks": []
                     }
+                    save_checklists()
                     st.session_state.open_id = uid
                     st.session_state.show_form = False
                     st.rerun()
@@ -138,7 +160,9 @@ if page == "Checklist":
                 st.markdown('<span style="color:#cbd5e1; font-size:1.1rem; cursor:grab;">⠿</span>', unsafe_allow_html=True)
             with col_check:
                 checked = st.checkbox(task["label"], value=task["done"], key=f"{uid}_{i}")
-                st.session_state.checklists[uid]["tasks"][i]["done"] = checked
+                if st.session_state.checklists[uid]["tasks"][i]["done"] != checked:
+                    st.session_state.checklists[uid]["tasks"][i]["done"] = checked
+                    save_checklists()
 
         if tasks:
             st.markdown('<p class="cl-drag-hint">⠿ Drag items to reorder</p>', unsafe_allow_html=True)
@@ -148,6 +172,7 @@ if page == "Checklist":
             if st.form_submit_button("＋ Add Item"):
                 if new_task.strip():
                     st.session_state.checklists[uid]["tasks"].append({"label": new_task.strip(), "done": False})
+                    save_checklists()
                     st.rerun()
 
 elif page == "Autobiography":
@@ -182,14 +207,15 @@ elif page == "Autobiography":
     st.markdown("#### Education")
     st.markdown("""
     <div class="timeline-item">
-        <h4>Primary & Secondary School</h4>
+        <h4>Primary & Secondary School — University of San Carlos</h4>
         <div class="date">Elementary — High School</div>
         <p>
-            During my elementary and high school years, I was an active student — joining clubs,
-            serving as an officer in CAT (Citizenship Advancement Training), and volunteering as
-            a sacristan, assisting the parish priest during church services. Despite all the
-            extracurricular involvement, I always found time for my favorite escape: computer games.
-            Those years taught me how to balance responsibility with the things I enjoy.
+            During my elementary and high school years at the University of San Carlos, I was an
+            active student — joining clubs, serving as an officer in CAT (Citizenship Advancement
+            Training), and volunteering as a sacristan, assisting the parish priest during church
+            services. Despite all the extracurricular involvement, I always found time for my
+            favorite escape: computer games. Those years taught me how to balance responsibility
+            with the things I enjoy.
         </p>
     </div>
     <div class="timeline-item">
