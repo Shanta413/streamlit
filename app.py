@@ -179,10 +179,8 @@ elif page == "Autobiography":
         <div class="label">About Me</div>
         <h4>Christian Jayson Cantiller</h4>
         <p>
-            I'm a BS Information Technology student from Cebu City, Philippines. I grew up surrounded
-            by technology — my family owned a computer shop, and that early exposure sparked a lifelong
-            passion for computers, gaming, and eventually web development. I'm driven by curiosity,
-            a love for building things, and the goal of turning my skills into a meaningful career.
+Gemini said
+I'm a BSIT student currently studying at Cebu Institute of Technology in Cebu City, Philippines. I grew up surrounded by technology—my family owned a computer shop, and that early exposure got me hooked on computers, gaming, and eventually web development. I’ve always been curious about how systems work and how they are built, which inspired my goal to turn this passion into a career.
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -195,8 +193,7 @@ elif page == "Autobiography":
         <p>
             I was born and raised in Sambag 1, Cebu City. Growing up, I spent most of my time
             playing outside with neighborhood friends. Everything changed when I discovered computers —
-            my family owned a computer shop, and I was instantly hooked on its games. That early
-            fascination with technology became the foundation for the path I'm on today.
+            my family started a computer shop, and I was instantly hooked on its games.
         </p>
     </div>
     """, unsafe_allow_html=True)
