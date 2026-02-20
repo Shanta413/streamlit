@@ -225,15 +225,6 @@ elif page == "Autobiography":
             strengthened both my technical skills and ability to work in teams.
         </p>
     </div>
-    <div class="timeline-item">
-        <h4>Certificate of Proficiency in Hiragana & Katakana</h4>
-        <div class="date">Japanese Language — JLPT N5 Level</div>
-        <p>
-            As part of my interest in Japanese culture, I earned a Certificate of Proficiency in
-            Hiragana and Katakana — the foundational writing systems of the Japanese language.
-            This reflects my commitment to learning beyond my core field and exploring new cultures.
-        </p>
-    </div>
     """, unsafe_allow_html=True)
 
     st.markdown("#### Interests & Hobbies")
@@ -363,14 +354,16 @@ elif page == "Components Used":
     """, unsafe_allow_html=True)
 
     if "drag_items" not in st.session_state:
-        st.session_state.drag_items = [
-            {"id": "drag",  "order": 1, "name": "streamlit-draggable-list"},
-            {"id": "check", "order": 2, "name": "st.checkbox (Checklist)"},
-            {"id": "btn",   "order": 3, "name": "st.button (Sidebar Nav)"},
-            {"id": "form",  "order": 4, "name": "st.form (Add Task)"},
-            {"id": "state", "order": 5, "name": "st.session_state"},
-            {"id": "html",  "order": 6, "name": "st.markdown (HTML/CSS)"},
-        ]
+         st.session_state.drag_items = [
+        {"id": "drag",  "order": 1, "name": "streamlit-draggable-list"},
+        {"id": "check", "order": 2, "name": "st.checkbox (Checklist)"},
+        {"id": "btn",   "order": 3, "name": "st.button (Sidebar Nav)"},
+        {"id": "form",  "order": 4, "name": "st.form (Add Task)"},
+        {"id": "state", "order": 5, "name": "st.session_state"},
+        {"id": "html",  "order": 6, "name": "st.markdown (HTML/CSS)"},
+        {"id": "col",   "order": 7, "name": "st.columns (Layout)"},
+        {"id": "json",  "order": 8, "name": "JSON file (Data Persistence)"},
+    ]
 
     result = DraggableList(st.session_state.drag_items, width="100%", key="drag_list")
     if result:
