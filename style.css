@@ -7,28 +7,24 @@ html, body, [data-testid="stApp"] {
 }
 [data-testid="stHeader"] { background-color: transparent !important; border-bottom: none !important; }
 
-[data-testid="collapsedControl"] {
-    display: flex !important;
-    visibility: visible !important;
-    filter: none !important;
-}
-[data-testid="collapsedControl"] button {
-    background-color: #0f172a !important;
-    border: 1px solid #1e293b !important;
-    border-radius: 8px !important;
-    padding: 0.4rem !important;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
-}
-[data-testid="collapsedControl"] button svg {
-    stroke: #cbd5e1 !important;
-}
-[data-testid="collapsedControl"] button:hover {
-    background-color: #1e293b !important;
-}
-[data-testid="collapsedControl"] button:hover svg {
-    stroke: #ffffff !important;
+/* ── Hide sidebar collapse & expand buttons completely ── */
+[data-testid="stSidebarCollapseButton"],
+[data-testid="collapsedControl"],
+[data-testid="stSidebarCollapsedControl"],
+button[kind="header"],
+[data-testid="stSidebarCollapseButton"] button,
+[data-testid="collapsedControl"] button,
+[data-testid="stSidebarCollapsedControl"] button {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
 }
 
+/* ── Sidebar ── */
 [data-testid="stSidebar"] { background-color: #0f172a !important; padding-top: 1.5rem !important; }
 [data-testid="stSidebar"] * { color: #cbd5e1 !important; }
 [data-testid="stSidebar"] .stButton { width: 100% !important; }
@@ -59,6 +55,7 @@ html, body, [data-testid="stApp"] {
     border-left: 3px solid #3b82f6 !important; box-shadow: none !important;
 }
 
+/* ── Main area ── */
 [data-testid="stMain"] { background-color: #f0f0f5 !important; }
 [data-testid="stMain"] *:not(iframe):not(.stCustomComponentV1):not(.stCustomComponentV1 *) {
     color: #111111 !important;
@@ -79,6 +76,7 @@ html, body, [data-testid="stApp"] {
     color: #9ca3af !important; opacity: 1 !important;
 }
 
+/* ── Default main buttons ── */
 [data-testid="stMain"] .stButton > button {
     background-color: #f1f3f5 !important; color: #111111 !important;
     border: 1px solid #dee2e6 !important; border-radius: 6px !important;
@@ -87,6 +85,7 @@ html, body, [data-testid="stApp"] {
     background-color: #e9ecef !important;
 }
 
+/* ── Create button ── */
 [data-testid="stMain"] button[key="create_toggle"] {
     background-color: #5b5fc7 !important; color: #ffffff !important;
     border: none !important; border-radius: 8px !important;
@@ -99,6 +98,7 @@ html, body, [data-testid="stApp"] {
     color: #ffffff !important;
 }
 
+/* ── Checklist open buttons ── */
 [data-testid="stMain"] button[key^="open_"] {
     background: transparent !important;
     border: none !important;
@@ -147,6 +147,7 @@ html, body, [data-testid="stApp"] {
     text-decoration: underline !important;
 }
 
+/* ── Checklist delete buttons ── */
 [data-testid="stMain"] button[key^="del_"] {
     background: transparent !important;
     border: none !important;
@@ -166,6 +167,32 @@ html, body, [data-testid="stApp"] {
     text-decoration: underline !important;
 }
 
+/* ── Task item delete ✕ buttons ── */
+[data-testid="stMain"] button[key^="taskdel_"] {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0.2rem 0.5rem !important;
+    min-height: 0 !important;
+}
+[data-testid="stMain"] button[key^="taskdel_"] * {
+    color: #cbd5e1 !important;
+    font-size: 0.85rem !important;
+    font-weight: 400 !important;
+}
+[data-testid="stMain"] button[key^="taskdel_"]:hover {
+    background: transparent !important;
+}
+[data-testid="stMain"] button[key^="taskdel_"]:hover * {
+    color: #ef4444 !important;
+}
+
+/* Align checkbox rows with delete button */
+[data-testid="stMain"] [data-testid="stHorizontalBlock"] {
+    align-items: center !important;
+}
+
+/* ── Confirm delete buttons ── */
 [data-testid="stMain"] button[key="confirm_yes"] {
     background-color: #ef4444 !important; color: #ffffff !important;
     border: none !important; border-radius: 8px !important;
@@ -177,7 +204,6 @@ html, body, [data-testid="stApp"] {
 [data-testid="stMain"] button[key="confirm_yes"] * {
     color: #ffffff !important;
 }
-
 [data-testid="stMain"] button[key="confirm_no"] {
     background-color: #ffffff !important; color: #374151 !important;
     border: 1px solid #dee2e6 !important; border-radius: 8px !important;
@@ -187,6 +213,7 @@ html, body, [data-testid="stApp"] {
     background-color: #f1f3f5 !important;
 }
 
+/* ── Form submit button ── */
 [data-testid="stMain"] .stFormSubmitButton > button {
     background-color: #5b5fc7 !important; color: #ffffff !important;
     border: none !important; border-radius: 8px !important;
@@ -199,6 +226,7 @@ html, body, [data-testid="stApp"] {
     color: #ffffff !important;
 }
 
+/* ── Form container ── */
 [data-testid="stMain"] .stForm {
     border: 1px solid #dee2e6 !important; border-radius: 8px !important;
     background-color: #ffffff !important;
@@ -207,6 +235,7 @@ html, body, [data-testid="stApp"] {
     color: #374151 !important; font-weight: 500 !important;
 }
 
+/* ── Typography ── */
 .dash-title {
     font-family: 'Playfair Display', serif !important;
     font-style: italic !important; font-weight: 700 !important;
@@ -218,6 +247,7 @@ html, body, [data-testid="stApp"] {
     margin: 0 0 1.25rem 0 !important; line-height: 1.6 !important;
 }
 
+/* ── Checklist table header ── */
 .cl-table-header {
     display: flex !important; justify-content: space-between !important;
     padding: 0.5rem 0 !important; border-bottom: 2px solid #e5e7eb !important;
@@ -227,6 +257,7 @@ html, body, [data-testid="stApp"] {
     font-size: 0.85rem !important; font-weight: 700 !important; color: #374151 !important;
 }
 
+/* ── Modal ── */
 .modal-overlay {
     position: fixed !important; top: 0 !important; left: 0 !important;
     width: 100vw !important; height: 100vh !important;
@@ -249,23 +280,25 @@ html, body, [data-testid="stApp"] {
     color: #6b7280 !important;
 }
 
+/* ── Checklist detail header ── */
 .cl-detail-header {
-    display: flex !important; justify-content: space-between !important;
-    align-items: baseline !important; margin-bottom: 1rem !important;
+    margin-bottom: 0.1rem !important;
 }
-.cl-detail-title {
+.cl-checklist-name {
     font-family: 'Playfair Display', serif !important;
     font-style: italic !important; font-weight: 700 !important;
-    font-size: 1.4rem !important; color: #111111 !important; margin: 0 !important;
+    font-size: 2rem !important; color: #1e293b !important;
+    margin: 0 !important;
 }
-.cl-detail-count {
-    font-size: 0.9rem !important; font-weight: 600 !important; color: #6b7280 !important;
-}
-.cl-drag-hint {
-    text-align: center !important; font-size: 0.8rem !important;
-    color: #9ca3af !important; margin: 1rem 0 0.5rem 0 !important;
+.cl-detail-title {
+    font-family: 'Inter', sans-serif !important;
+    font-style: normal !important; font-weight: 600 !important;
+    font-size: 0.85rem !important; color: #9ca3af !important;
+    text-transform: uppercase !important; letter-spacing: 0.06em !important;
+    margin: 0 0 0.75rem 0 !important;
 }
 
+/* ── Section cards ── */
 .section-card {
     background-color: #f8f9fa !important; border: 1px solid #e2e6ea !important;
     border-radius: 10px !important; padding: 1.25rem 1.5rem !important;
@@ -285,6 +318,7 @@ html, body, [data-testid="stApp"] {
     letter-spacing: 0.04em !important; margin-bottom: 0.15rem !important;
 }
 
+/* ── Project cards ── */
 .project-card {
     background-color: #f8f9fa !important; border: 1px solid #e2e6ea !important;
     border-radius: 10px !important; padding: 1.25rem 1.5rem !important;
@@ -309,6 +343,7 @@ html, body, [data-testid="stApp"] {
     margin-top: 8px !important;
 }
 
+/* ── Timeline ── */
 .timeline-item {
     border-left: 2px solid #dee2e6 !important; padding-left: 1.25rem !important;
     padding-bottom: 1.5rem !important; position: relative !important;

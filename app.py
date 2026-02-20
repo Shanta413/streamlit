@@ -4,7 +4,7 @@ import uuid
 import json
 import os
 
-st.set_page_config(layout="wide", page_title="Checkway")
+st.set_page_config(layout="wide", page_title="Checkway", initial_sidebar_state="expanded")
 
 with open("style.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
@@ -82,11 +82,11 @@ if page == "Checklist":
         st.markdown("""
         <div class="section-card" style="margin-top: 0.25rem; margin-bottom: 1.25rem;">
             <p>
-                 <strong>Work in Progress</strong> —
+                <strong>Work in Progress</strong> —
                 <em>I built this checklist module for personal use because most free checklist platforms
             have limitations or require paid plans. For example, Checkli's free version only allows
             up to two active checklists.
-            Additionally, many platforms require users to log in repeatedly, which can be inconvenient.
+            Additionally, many platforms require users to log in repeatedly, which is a hassle for me.
             I prefer a session-based system where progress is automatically saved, so when I return
             to the website, my checklists remain accessible without the hassle of logging in again</em>
             </p>
@@ -116,8 +116,7 @@ if page == "Checklist":
 
         st.markdown("""
         <div class="cl-table-header">
-            <span>Name</span>
-            <span>Delete</span>
+            <span>Title Name</span>
         </div>
         """, unsafe_allow_html=True)
 
@@ -139,8 +138,6 @@ if page == "Checklist":
         uid = st.session_state.open_id
         cl  = st.session_state.checklists[uid]
         tasks = cl["tasks"]
-        done  = sum(1 for t in tasks if t["done"])
-        total = len(tasks)
 
         if st.button("← Back"):
             st.session_state.open_id = None
@@ -148,24 +145,24 @@ if page == "Checklist":
 
         st.markdown(
             f'<div class="cl-detail-header">'
-            f'<p class="cl-detail-title">Checklist Items</p>'
-            f'<span class="cl-detail-count">{done}/{total}</span>'
-            f'</div>',
+            f'<p class="cl-checklist-name">{cl["title"]}</p>'
+            f'</div>'
+            f'<p class="cl-detail-title">Checklist Items</p>',
             unsafe_allow_html=True,
         )
 
         for i, task in enumerate(tasks):
-            col_drag, col_check = st.columns([0.3, 8])
-            with col_drag:
-                st.markdown('<span style="color:#cbd5e1; font-size:1.1rem; cursor:grab;">⠿</span>', unsafe_allow_html=True)
+            col_check, col_del = st.columns([8, 0.3])
             with col_check:
                 checked = st.checkbox(task["label"], value=task["done"], key=f"{uid}_{i}")
                 if st.session_state.checklists[uid]["tasks"][i]["done"] != checked:
                     st.session_state.checklists[uid]["tasks"][i]["done"] = checked
                     save_checklists()
-
-        if tasks:
-            st.markdown('<p class="cl-drag-hint">⠿ Drag items to reorder</p>', unsafe_allow_html=True)
+            with col_del:
+                if st.button("✕", key=f"taskdel_{uid}_{i}"):
+                    st.session_state.checklists[uid]["tasks"].pop(i)
+                    save_checklists()
+                    st.rerun()
 
         with st.form(key=f"form_{uid}", clear_on_submit=True):
             new_task = st.text_input("New task", placeholder="Enter a new item", label_visibility="collapsed")
@@ -374,35 +371,6 @@ elif page == "Components Used":
             {"id": "state", "order": 5, "name": "st.session_state"},
             {"id": "html",  "order": 6, "name": "st.markdown (HTML/CSS)"},
         ]
-
-    st.markdown("""
-    <script>
-    function styleDraggableList() {
-        const iframes = document.querySelectorAll('iframe');
-        iframes.forEach(iframe => {
-            try {
-                const doc = iframe.contentDocument || iframe.contentWindow.document;
-                if (doc && doc.body) {
-                    const style = doc.createElement('style');
-                    style.textContent = `
-                        body { background-color: #ffffff !important; font-family: 'Inter', sans-serif !important; }
-                        .draggable-item, [class*="draggable"], [class*="item"], div {
-                            background-color: #f8f9fa !important; color: #111111 !important;
-                            border: 1px solid #e2e6ea !important; border-radius: 8px !important;
-                            margin-bottom: 4px !important; font-family: 'Inter', sans-serif !important;
-                        }
-                        span, p, a { color: #111111 !important; }
-                    `;
-                    doc.head.appendChild(style);
-                }
-            } catch(e) {}
-        });
-    }
-    setTimeout(styleDraggableList, 500);
-    setTimeout(styleDraggableList, 1500);
-    setTimeout(styleDraggableList, 3000);
-    </script>
-    """, unsafe_allow_html=True)
 
     result = DraggableList(st.session_state.drag_items, width="100%", key="drag_list")
     if result:
