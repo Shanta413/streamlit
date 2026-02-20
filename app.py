@@ -27,11 +27,10 @@ def save_checklists():
     except IOError:
         pass
 
-if "page"        not in st.session_state: st.session_state.page = "Checklist"
-if "checklists"  not in st.session_state: st.session_state.checklists = load_checklists()
-if "open_id"     not in st.session_state: st.session_state.open_id = None
-if "show_form"   not in st.session_state: st.session_state.show_form = False
-if "confirm_del" not in st.session_state: st.session_state.confirm_del = None
+if "page"       not in st.session_state: st.session_state.page = "Checklist"
+if "checklists" not in st.session_state: st.session_state.checklists = load_checklists()
+if "open_id"    not in st.session_state: st.session_state.open_id = None
+if "show_form"  not in st.session_state: st.session_state.show_form = False
 
 PAGES = ["Checklist", "Autobiography", "Portfolio", "Components Used"]
 
@@ -41,7 +40,6 @@ with st.sidebar:
             st.session_state.page = name
             st.session_state.open_id = None
             st.session_state.show_form = False
-            st.session_state.confirm_del = None
             st.rerun()
 
 page = st.session_state.page
@@ -49,35 +47,7 @@ MAX_TITLE = 20
 
 if page == "Checklist":
 
-    if st.session_state.confirm_del is not None:
-        del_uid = st.session_state.confirm_del
-        if del_uid in st.session_state.checklists:
-            del_title = st.session_state.checklists[del_uid]["title"]
-            st.markdown(
-                f'<div class="modal-overlay">'
-                f'<div class="modal-box">'
-                f'<h3>Delete Checklist</h3>'
-                f'<p>Are you sure you want to delete <strong>"{del_title}"</strong>? This cannot be undone.</p>'
-                f'<div class="modal-btns" id="modal-buttons"></div>'
-                f'</div></div>',
-                unsafe_allow_html=True,
-            )
-            col_yes, col_no, _ = st.columns([1, 1, 6])
-            with col_yes:
-                if st.button("Yes, delete", key="confirm_yes"):
-                    del st.session_state.checklists[del_uid]
-                    save_checklists()
-                    st.session_state.confirm_del = None
-                    st.rerun()
-            with col_no:
-                if st.button("Cancel", key="confirm_no"):
-                    st.session_state.confirm_del = None
-                    st.rerun()
-        else:
-            st.session_state.confirm_del = None
-            st.rerun()
-
-    elif st.session_state.open_id is None:
+    if st.session_state.open_id is None:
         st.markdown('<p class="dash-title">Checklist Dashboard</p>', unsafe_allow_html=True)
         st.markdown("""
         <div class="section-card" style="margin-top: 0.25rem; margin-bottom: 1.25rem;">
@@ -131,7 +101,8 @@ if page == "Checklist":
                         st.rerun()
                 with col2:
                     if st.button("Delete", key=f"del_{uid}"):
-                        st.session_state.confirm_del = uid
+                        del st.session_state.checklists[uid]
+                        save_checklists()
                         st.rerun()
 
     else:
@@ -179,8 +150,11 @@ elif page == "Autobiography":
         <div class="label">About Me</div>
         <h4>Christian Jayson Cantiller</h4>
         <p>
-Gemini said
-I'm a BSIT student currently studying at Cebu Institute of Technology in Cebu City, Philippines. I grew up surrounded by technology—my family owned a computer shop, and that early exposure got me hooked on computers, gaming, and eventually web development. I’ve always been curious about how systems work and how they are built, which inspired my goal to turn this passion into a career.
+            I'm a BSIT student currently studying at Cebu Institute of Technology in Cebu City, Philippines.
+            I grew up surrounded by technology — my family owned a computer shop, and that early exposure
+            got me hooked on computers, gaming, and eventually web development. I've always been curious
+            about how systems work and how they are built, which inspired my goal to turn this passion
+            into a career.
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -351,16 +325,16 @@ elif page == "Components Used":
     """, unsafe_allow_html=True)
 
     if "drag_items" not in st.session_state:
-         st.session_state.drag_items = [
-        {"id": "drag",  "order": 1, "name": "streamlit-draggable-list"},
-        {"id": "check", "order": 2, "name": "st.checkbox (Checklist)"},
-        {"id": "btn",   "order": 3, "name": "st.button (Sidebar Nav)"},
-        {"id": "form",  "order": 4, "name": "st.form (Add Task)"},
-        {"id": "state", "order": 5, "name": "st.session_state"},
-        {"id": "html",  "order": 6, "name": "st.markdown (HTML/CSS)"},
-        {"id": "col",   "order": 7, "name": "st.columns (Layout)"},
-        {"id": "json",  "order": 8, "name": "JSON file (Data Persistence)"},
-    ]
+        st.session_state.drag_items = [
+            {"id": "drag",  "order": 1, "name": "streamlit-draggable-list"},
+            {"id": "check", "order": 2, "name": "st.checkbox (Checklist)"},
+            {"id": "btn",   "order": 3, "name": "st.button (Sidebar Nav)"},
+            {"id": "form",  "order": 4, "name": "st.form (Add Task)"},
+            {"id": "state", "order": 5, "name": "st.session_state"},
+            {"id": "html",  "order": 6, "name": "st.markdown (HTML/CSS)"},
+            {"id": "col",   "order": 7, "name": "st.columns (Layout)"},
+            {"id": "json",  "order": 8, "name": "JSON file (Data Persistence)"},
+        ]
 
     result = DraggableList(st.session_state.drag_items, width="100%", key="drag_list")
     if result:

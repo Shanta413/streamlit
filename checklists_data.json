@@ -6,20 +6,6 @@
       {
         "label": "test 2",
         "done": true
-      },
-      {
-        "label": "test 3",
-        "done": true
-      }
-    ]
-  },
-  "054c14a5": {
-    "title": "test",
-    "date": "2026-02-20",
-    "tasks": [
-      {
-        "label": "sadada",
-        "done": true
       }
     ]
   }
